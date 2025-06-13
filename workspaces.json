@@ -1,0 +1,33 @@
+unknown command for &quot;fab&quot;
+
+Usage:  <command> <subcommand> [flags]
+
+Available commands:
+  acl
+  api
+  assign
+  auth
+  cd
+  config
+  cp
+  desc
+  exists
+  export
+  extension
+  get
+  import
+  job
+  label
+  ln
+  ls
+  mkdir
+  mv
+  open
+  pwd
+  rm
+  set
+  start
+  stop
+  table
+  unassign
+
