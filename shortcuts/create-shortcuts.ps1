@@ -30,6 +30,10 @@ foreach ($row in $csvRows) {
         Write-Warning "Skipping row due to missing required fields: $($row | ConvertTo-Json -Compress)"
         continue
 
+        # using python get_adls_gen2_entry_folder.py to get the ADLS GEN 2 entry folder / container
+        # This part is not implemented in this script, assuming the CSV already has the required fields
+        
+
         # loop on the ADLS GEN 2 entry folder / container        
         $workspaceName = $row.workspace
         $lakehouseName = $row.lakehouse
