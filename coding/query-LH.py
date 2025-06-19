@@ -1,28 +1,13 @@
 import pyodbc
-from msal import ConfidentialClientApplication
+from azure.identity import DefaultAzureCredential
 
 # === Configuration ===
 sql_endpoint = "your-lakehouse.sql.azuresynapse.net"
 database = "YourLakehouseName"
-client_id = "your-client-id"
-tenant_id = "your-tenant-id"
-client_secret = "your-client-secret"
 sql_query = "SELECT TOP 10 * FROM YourTable"
 
 # === Get Azure AD Access Token ===
-authority = f"https://login.microsoftonline.com/{tenant_id}"
-scope = ["https://sql.azuresynapse.net/.default"]
-
-app = ConfidentialClientApplication(
-    client_id, authority=authority, client_credential=client_secret
-)
-
-token_response = app.acquire_token_for_client(scopes=scope)
-
-if "access_token" not in token_response:
-    raise Exception(f"Authentication failed: {token_response.get('error_description')}")
-
-access_token = token_response["access_token"]
+credential = DefaultAzureCredential()
 
 # === Connect to Fabric Lakehouse via ODBC ===
 conn_str = (
@@ -35,7 +20,7 @@ conn_str = (
 )
 
 # === Run SQL Query ===
-with pyodbc.connect(conn_str, attrs_before={1256: access_token}) as conn:
+with pyodbc.connect(conn_str, attrs_before={1256: credential.get_token("https://sql.azuresynapse.net/.default").token}) as conn:
     cursor = conn.cursor()
     cursor.execute(sql_query)
 
